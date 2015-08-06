@@ -1,4 +1,4 @@
-<?php namespace RichJenks\ChiSquare;
+<?php
 
 $data = [
 	[2100, 1900],
@@ -6,4 +6,4 @@ $data = [
 ];
 
 require 'ChiSquare.php';
-$chi = new ChiSquare($data);
+$chi = new RichJenks\ChiSquare\ChiSquare($data);
