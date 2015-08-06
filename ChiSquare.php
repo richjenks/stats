@@ -18,7 +18,7 @@ class ChiSquare {
 	private $d;
 
 	/**
-	 * @var float Alpha: Chi Square value
+	 * @var float Alpha: Critical Value
 	 */
 	private $a;
 
@@ -26,15 +26,10 @@ class ChiSquare {
 	 * @param array $observed observed data as tabular array
 	 */
 	public function __construct($data, $p = 0.05) {
-
 		$this->data = $data;
-		$this->p = $p;
-		$this->d = $this->calc_dof();
-
-		var_dump($this->data);
-		var_dump($this->p);
-		var_dump($this->d);
-
+		$this->p    = $p;
+		$this->d    = $this->calc_dof($this->data);
+		$this->a    = $this->intersect('critical-values.csv', $this->p, $this->d);
 	}
 
 	/**
@@ -50,15 +45,44 @@ class ChiSquare {
 	}
 
 	/**
-	 * Determines the alpha for Chi Square
+	 * Finds the value of an intersection of a CSV file
+	 * when given column and row headings
 	 *
-	 * @param float $p Probability of chance
-	 * @param int   $d Degrees of Freedom
+	 * @param string $file   Path to CSV file
+	 * @param string $column Column heading to search by
+	 * @param string $row    Row heading to search by
 	 */
-	private static function calc_alpha($p, $d) {
-		$alphas = [
-			1
-		];
+	function intersect($file, $column, $row) {
+
+		// All cells will be strings
+		$column = (string) $column;
+		$row    = (string) $row;
+
+		// Get table
+		$table = array_map('str_getcsv', file($file));
+
+		// Get headings and flip so values match row keys
+		$headings = array_shift($table);
+		array_shift($headings); // First is empty!
+		$headings = array_flip($headings);
+
+		// Move row headings to array keys
+		foreach ($table as $key => $value) $rows[array_shift($value)] = $value;
+
+		// Get column key, if exists
+		if (!isset($headings[$column])) return null;
+		$key = $headings[$column];
+
+		// Get intersection value, if exists
+		if (!isset($rows[$row][$key])) return null;
+		$value = $rows[$row][$key];
+
+		// Attempt to cast to a sensible type
+		if (in_array(strtolower($value), ['true', 'false'])) $value = (bool) $value;
+		if (is_numeric($value)) $value = $value+0;
+
+		return $value;
+
 	}
 
 }
