@@ -70,7 +70,7 @@ Stats::mode([1, 2, 2, 3]);
 // [2, 3]
 ```
 
-> This function always return an array because it is able to handle multi-modal data and an empty array would mean there is no mode
+> This function always returns an array because it is able to handle multi-modal data — an empty array would mean there is no mode
 
 ### Frequencies
 
@@ -115,7 +115,7 @@ Stats::sterr([1, 2, 3, 4, 5]);
 
 > If you don't understand this bit you probably don't need it :)
 
-You can optionally pass the constants `Stats::Sample` or `Stats::POPULATION` as second parameters to determine whether your data is for a sample or a whole population:
+You can optionally pass the constants `Stats::SAMPLE` (default) or `Stats::POPULATION` as second parameters to determine whether your data is for a sample or a whole population:
 
 ```php
 Stats::variance([1, 2, 3, 4, 5], Stats::POPULATION)
@@ -127,8 +127,6 @@ Stats::stdev([1, 2, 3, 4, 5], Stats::POPULATION)
 Stats::sterr([1, 2, 3, 4, 5], Stats::POPULATION)
 // 0.70710678118655
 ```
-
-`Stats::Sample` is used by default and can be omitted if that's the intention.
 
 ## Running tests
 
