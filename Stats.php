@@ -1,69 +1,51 @@
-<?php namespace RichJenks;
+<?php
 
-class Stats {
+declare(strict_types=1);
 
-	/**
-	 * Finds the value of an intersection of a CSV file
-	 * when given column and row headings
-	 *
-	 * @param string $file   Path to CSV file
-	 * @param string $column Column heading to search by
-	 * @param string $row    Row heading to search by
-	 *
- 	 * @return mixed Value at intersection or NULL if not found
-	 */
-	public static function intersect($file, $column, $row) {
+namespace RichJenks;
 
-		// All cells will be strings
-		$column = (string) $column;
-		$row    = (string) $row;
+/**
+ * PHP Statistics Library for non-statisticians
+ *
+ * @todo Write unit tests
+ */
+class Stats
+{
 
-		// Get table
-		$table = array_map('str_getcsv', file($file));
-
-		// Get headings and flip so values match row keys
-		$headings = array_shift($table);
-		array_shift($headings); // First is empty!
-		$headings = array_flip($headings);
-
-		// Move row headings to array keys
-		foreach ($table as $key => $value) $rows[array_shift($value)] = $value;
-
-		// Get column key, if exists
-		if (!isset($headings[$column])) return null;
-		$key = $headings[$column];
-
-		// Get intersection value, if exists
-		if (!isset($rows[$row][$key])) return null;
-		$value = $rows[$row][$key];
-
-		// Attempt to cast to a sensible type
-		if (in_array(strtolower($value), ['true', 'false'])) $value = (bool) $value;
-		if (is_numeric($value)) $value = $value+0;
-
-		return $value;
-
-	}
+	// Constants for method options
+	const SAMPLE     = 0;
+	const POPULATION = 1;
 
 	/**
 	 * Calculates the mean of given data
 	 *
-	 * @param  array     $data Array of numbers
-	 * @return int|float Calculated mean
+	 * @param  array $data Array of numbers
+	 * @return float Calculated mean
 	 */
-	public static function mean($data) {
-		$sum = array_sum($data);
-		$num = count($data);
-		return $sum / $num;
+	public static function mean(array $data) : float
+	{
+		return array_sum($data) / count($data);
+	}
+
+	/**
+	 * Alias for mean, usage is the same
+	 *
+	 * @param  array $data Array of numbers
+	 * @return float Calculated mean
+	 */
+	public static function average(array $data) : float
+	{
+		return self::mean($data);
 	}
 
 	/**
 	 * Calculates the median of given data
 	 *
-	 * @param  array     $data Array of numbers
-	 * @return int|float Calculated median
+	 * @param  array $data Array of numbers
+	 * @return float Calculated median
 	 */
-	public static function median($data) {
+	public static function median(array $data) : float
+	{
 		sort($data);
 		$count = count($data);
 		$i = round($count / 2) - 1;
@@ -74,18 +56,118 @@ class Stats {
 	/**
 	 * Calculates the mode of given data
 	 *
-	 * @todo Support multiple or no modes
+	 * @todo Support multiple or no modes using `self::frequency()`
 	 *
-	 * @param  array     $data Array of numbers
-	 * @return int|float Calculated mode
+	 * @param  array $data Array of numbers
+	 * @return array Mode(s)
 	 */
-	public static function mode($data) {
-		$counts = [];
-		foreach ($data as $value)
-			isset($counts[$value]) ? $counts[$value]++ : $counts[$value] = 1;
-		arsort($counts);
-		reset($counts);
-		return key($counts);
+	public static function mode(array $data) : array
+	{
+		// Frequency of each value
+		$data = self::frequencies($data);
+		// Array for holding confirmed modes
+		$modes = [];
+		// First option is a mode because it's first in frequency array
+		$modes[] = key($data);
+		// Store the frequency of the first value for later comparison
+		$max = $data[key($data)];
+		// Remove the first item because it's already added to modes
+		unset($data[key($data)]);
+		// Set to true if a value is lower than the previous one
+		$found = false;
+
+		// Iterate through values to see if each one is a mode
+		foreach ($data as $value => $frequency) {
+			if ($frequency === $max) {
+				$modes[] = $value;
+			} else {
+				$found = true;
+				break;
+			}
+		}
+
+		return ($found) ? $modes : [];
+
+	}
+
+	/**
+	 * Constructs a sorted array of frequencies for each value in a series
+	 *
+	 * @param  array $data Array of numbers
+	 * @return array Array of numbers and frequencies
+	 */
+	public function frequencies(array $data) : array
+	{
+		$frequencies = array_count_values($data);
+		arsort($frequencies);
+		return $frequencies;
+	}
+
+	/**
+	 * Determines the range of given data
+	 *
+	 * @param  array $data Array of numbers
+	 * @return float Calculated range
+	 */
+	public static function range(array $data) : float
+	{
+		return max($data) - min($data);
+	}
+
+	/**
+	 * Determines the variance of given data
+	 *
+	 * @param array $data Array of numbers
+	 * @param int   $type Whether the data is a sample or whole population
+	 *
+	 * @return float Calculated variance
+	 */
+	public static function variance(array $data, int $type = self::SAMPLE) : float
+	{
+		$mean = self::mean($data);
+
+		foreach ($data as $key => $value) {
+			$data[$key] = $value - $mean;
+			$data[$key] = pow($data[$key], 2);
+		}
+
+		$sum      = array_sum($data);
+		$count    = count($data);
+		$divide   = ($type === self::SAMPLE) ? $count - 1 : $count;
+		$variance = $sum / $divide;
+
+		return $variance;
+	}
+
+	/**
+	 * Determines the standard deviation of given data
+	 *
+	 * @param array $data Array of numbers
+	 * @param int   $type Whether the data is a sample or whole population
+	 *
+	 * @return float Calculated standard deviation
+	 */
+	public static function stdev(array $data, int $type = self::SAMPLE) : float
+	{
+		return sqrt(self::variance($data, $type));
+	}
+
+	/**
+	 * Determines the standard error of given data
+	 *
+	 * @param array $data Array of numbers
+	 * @param int   $type Whether the data is a sample or whole population
+	 *
+	 * @return float Calculated standard error
+	 */
+	public static function sterr(array $data, int $type = self::SAMPLE) : float
+	{
+		$stdev   = self::stdev($data, $type);
+		$count   = count($data);
+		$divide  = ($type === self::SAMPLE) ? $count - 1 : $count;
+		$sterror = $stdev / sqrt($count);
+
+		return $sterror;
 	}
 
 }
