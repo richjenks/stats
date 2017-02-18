@@ -2,6 +2,24 @@
 
 Statistics library for non-statistical people
 
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+- [Example](#example)
+- [Usage](#usage)
+	- [Mean/Average](#meanaverage)
+	- [Median](#median)
+	- [Mode](#mode)
+	- [Frequencies](#frequencies)
+	- [Range](#range)
+	- [Variance, Standard Deviation & Standard Error](#variance-standard-deviation--standard-error)
+		- [Sample or Population](#sample-or-population)
+	- [Quartiles, Interquartile Range & Outliers](#quartiles-interquartile-range--outliers)
+		- [Quartiles](#quartiles)
+		- [Interquartile Range](#interquartile-range)
+		- [Outliers](#outliers)
+- [Unit Tests](#unit-tests)
+
 ## Introduction
 
 If you're into statistics then PHP will not be your language of choice (try [R](https://www.r-project.org/) instead) but if for any reason you, a non-statistician, need to _do some stats_ then this library aims to provide a simple set of methods for common statistical functions.
@@ -188,7 +206,7 @@ Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
 // [999]
 ```
 
-## Running tests
+## Unit Tests
 
 ```bash
 phpunit --bootstrap Stats.php tests/StatsTest
