@@ -12,14 +12,9 @@ final class StatsTest extends TestCase
 {
 	public function testMean(): void
 	{
-		$data = [3.141, 1.618, 1.234];
-		$this->assertLessThan(1.9977, Stats::mean($data));
-		$this->assertGreaterThan(1.9976, Stats::mean($data));
-
-		$this->assertEquals(2, Stats::mean([1, 2, 3]));
-		$this->assertEquals(273.125, Stats::mean([15, 1000, 68.5, 9]));
-
 		$this->assertEquals(2, Stats::average([1, 2, 3]));
+		$this->assertEquals(2, Stats::mean([1, 2, 3]));
+		$this->assertEquals(1.99766667, round(Stats::mean([3.141, 1.618, 1.234]), 8));
 	}
 
 	public function testMedian(): void
@@ -73,17 +68,45 @@ final class StatsTest extends TestCase
 		$this->assertEquals(2, Stats::variance([1, 2, 3, 4, 5], Stats::POPULATION));
 	}
 
-	public function testStdev(): void
+	public function testSd(): void
 	{
-		$this->assertEquals(1.5811388301, Stats::stdev([1, 2, 3, 4, 5]));
-		$this->assertEquals(1.5811388301, Stats::stdev([1, 2, 3, 4, 5], Stats::SAMPLE));
-		$this->assertEquals(1.4142135624, Stats::stdev([1, 2, 3, 4, 5], Stats::POPULATION));
+		$this->assertEquals(1.5811388301, Stats::sd([1, 2, 3, 4, 5]));
+		$this->assertEquals(1.5811388301, Stats::sd([1, 2, 3, 4, 5], Stats::SAMPLE));
+		$this->assertEquals(1.4142135624, Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION));
 	}
 
-	public function testSterr(): void
+	public function testSem(): void
 	{
-		$this->assertEquals(0.707106781187, Stats::sterr([1, 2, 3, 4, 5]));
-		$this->assertEquals(0.707106781187, Stats::sterr([1, 2, 3, 4, 5], Stats::SAMPLE));
-		$this->assertEquals(0.63245553203368, Stats::sterr([1, 2, 3, 4, 5], Stats::POPULATION));
+		$this->assertEquals(0.707106781187, Stats::sem([1, 2, 3, 4, 5]));
+		$this->assertEquals(0.707106781187, Stats::sem([1, 2, 3, 4, 5], Stats::SAMPLE));
+		$this->assertEquals(0.63245553203368, Stats::sem([1, 2, 3, 4, 5], Stats::POPULATION));
+	}
+
+	public function testQuartiles(): void
+	{
+		$this->assertEquals(
+			[0 => 1, 1 => 3.5, 2 => 6.5, 3 => 9.5, 4 => 12],
+			Stats::quartiles([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+		);
+		$this->assertEquals(
+			[0 => 1, 1 => 3.5, 2 => 7, 3 => 10.5, 4 => 13],
+			Stats::quartiles([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+		);
+		$this->assertEquals(
+			[0 => 443, 1 => 560, 2 => 725.5, 3 => 839, 4 => 930],
+			Stats::quartiles([839, 560, 607, 828, 875, 805, 646, 450, 930, 443])
+		);
+	}
+
+	public function testIqr(): void
+	{
+		$this->assertEquals(6, Stats::iqr([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
+		$this->assertEquals(7, Stats::iqr([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]));
+		$this->assertEquals(279, Stats::iqr([839, 560, 607, 828, 875, 805, 646, 450, 930, 443]));
+	}
+
+	public function testOutliers(): void
+	{
+		$this->assertEquals([999], Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]));
 	}
 }

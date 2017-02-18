@@ -6,8 +6,6 @@ namespace RichJenks;
 
 /**
  * PHP Statistics Library for non-statisticians
- *
- * @todo Write unit tests
  */
 class Stats
 {
@@ -17,10 +15,10 @@ class Stats
 	const POPULATION = 1;
 
 	/**
-	 * Calculates the mean of given data
+	 * Calculates the Mean of given data
 	 *
 	 * @param  array $data Array of numbers
-	 * @return float Calculated mean
+	 * @return float Calculated Mean
 	 */
 	public static function mean(array $data) : float
 	{
@@ -28,10 +26,10 @@ class Stats
 	}
 
 	/**
-	 * Alias for mean, usage is the same
+	 * Alias for Mean, usage is the same
 	 *
 	 * @param  array $data Array of numbers
-	 * @return float Calculated mean
+	 * @return float Calculated Mean
 	 */
 	public static function average(array $data) : float
 	{
@@ -39,10 +37,10 @@ class Stats
 	}
 
 	/**
-	 * Calculates the median of given data
+	 * Calculates the Median of given data
 	 *
 	 * @param  array $data Array of numbers
-	 * @return float Calculated median
+	 * @return float Calculated Median
 	 */
 	public static function median(array $data) : float
 	{
@@ -54,9 +52,7 @@ class Stats
 	}
 
 	/**
-	 * Calculates the mode of given data
-	 *
-	 * @todo Support multiple or no modes using `self::frequency()`
+	 * Calculates the Mode of given data
 	 *
 	 * @param  array $data Array of numbers
 	 * @return array Mode(s)
@@ -104,10 +100,10 @@ class Stats
 	}
 
 	/**
-	 * Determines the range of given data
+	 * Determines the Range of given data
 	 *
 	 * @param  array $data Array of numbers
-	 * @return float Calculated range
+	 * @return float Calculated Range
 	 */
 	public static function range(array $data) : float
 	{
@@ -115,12 +111,12 @@ class Stats
 	}
 
 	/**
-	 * Determines the variance of given data
+	 * Determines the Variance of given data
 	 *
 	 * @param array $data Array of numbers
 	 * @param int   $type Whether the data is a sample or whole population
 	 *
-	 * @return float Calculated variance
+	 * @return float Calculated Variance
 	 */
 	public static function variance(array $data, int $type = self::SAMPLE) : float
 	{
@@ -140,34 +136,99 @@ class Stats
 	}
 
 	/**
-	 * Determines the standard deviation of given data
+	 * Determines the Standard Deviation of given data
 	 *
 	 * @param array $data Array of numbers
 	 * @param int   $type Whether the data is a sample or whole population
 	 *
-	 * @return float Calculated standard deviation
+	 * @return float Calculated Standard Deviation
 	 */
-	public static function stdev(array $data, int $type = self::SAMPLE) : float
+	public static function sd(array $data, int $type = self::SAMPLE) : float
 	{
 		return sqrt(self::variance($data, $type));
 	}
 
 	/**
-	 * Determines the standard error of given data
+	 * Determines the Standard Error of the Mean
 	 *
 	 * @param array $data Array of numbers
 	 * @param int   $type Whether the data is a sample or whole population
 	 *
-	 * @return float Calculated standard error
+	 * @return float Calculated Standard Error
 	 */
-	public static function sterr(array $data, int $type = self::SAMPLE) : float
+	public static function sem(array $data, int $type = self::SAMPLE) : float
 	{
-		$stdev   = self::stdev($data, $type);
+		$stdev   = self::sd($data, $type);
 		$count   = count($data);
 		$divide  = ($type === self::SAMPLE) ? $count - 1 : $count;
 		$sterror = $stdev / sqrt($count);
 
 		return $sterror;
+	}
+
+	/**
+	 * Calculates the Quartiles of given data
+	 *
+	 * @param  array $data Array of numbers
+	 * @return array Quartiles 0–4 in order
+	 */
+	public static function quartiles(array $data) : array
+	{
+		sort($data);
+
+		$q = [];
+
+		$q[0] = min($data);
+		$q[2] = self::median($data);
+		$q[4] = max($data);
+
+		// If odd numbers of data points, remove middle one
+		if (count($data) % 2 !== 0) unset($data[round(count($data) / 2)]);
+
+		// Get halves of data
+		$chunks = array_chunk($data, count($data) / 2);
+
+		// Calculate 1st and 3rd quartiles
+		$q[1] = self::median($chunks[0]);
+		$q[3] = self::median($chunks[1]);
+
+		ksort($q);
+		return $q;
+	}
+
+	/**
+	 * Calculates the Interquartile Range of given data
+	 *
+	 * @param  array $data Array of numbers
+	 * @return array Calculated Interquartile Range
+	 */
+	public static function iqr(array $data) : float
+	{
+		$quartiles = self::quartiles($data);
+		return $quartiles[3] - $quartiles[1];
+	}
+
+	/**
+	 * Determines which values in a series are outliers
+	 *
+	 * @param  array $data Array of numbers
+	 * @return array Array of outliers
+	 */
+	public static function outliers(array $data) : array
+	{
+		$q     = self::quartiles($data);
+		$iqr   = self::iqr($data);
+		$lower = $q[1] - ($iqr * 1.5);
+		$upper = $q[3] + ($iqr * 1.5);
+
+		$outliers = [];
+		foreach ($data as $value) {
+			if ($value > $upper || $value < $lower) {
+				$outliers[] = $value;
+			}
+		}
+
+		return $outliers;
 	}
 
 }
