@@ -53,8 +53,8 @@ Stats::mean([15, 1000, 68.5, 9]);
 Calculates the median (middle value) of given data:
 
 ```php
-Stats::median([1, 2, 3]);
-// 2
+Stats::median([1, 2, 3, 4]);
+// 2.5
 
 Stats::median([3.141, 1.618, 1.234]);
 // 1.618
