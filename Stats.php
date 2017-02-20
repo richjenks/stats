@@ -151,19 +151,16 @@ class Stats
 	/**
 	 * Determines the Standard Error of the Mean
 	 *
-	 * @param array $data Array of numbers
-	 * @param int   $type Whether the data is a sample or whole population
-	 *
+	 * @param  array $data Array of numbers
 	 * @return float Calculated Standard Error
 	 */
-	public static function sem(array $data, int $type = self::SAMPLE) : float
+	public static function sem(array $data) : float
 	{
-		$stdev   = self::sd($data, $type);
-		$count   = count($data);
-		$divide  = ($type === self::SAMPLE) ? $count - 1 : $count;
-		$sterror = $stdev / sqrt($count);
+		$sd    = self::sd($data);
+		$count = count($data);
+		$sem   = $sd / sqrt($count);
 
-		return $sterror;
+		return $sem;
 	}
 
 	/**

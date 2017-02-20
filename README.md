@@ -116,13 +116,12 @@ Stats::range([-41, 1.61803]);
 // 42.61803
 ```
 
-### Variance, Standard Deviation & Standard Error
+### Variance & Standard Deviation
 
 These functions calculate:
 
 - **Variance**: square of average variation from the mean
 - **Standard Deviation**: square of average variation from the mean
-- **Standard Error**: how well the sample mean approximates the population mean
 
 ```php
 Stats::variance([1, 2, 3, 4, 5]);
@@ -130,9 +129,6 @@ Stats::variance([1, 2, 3, 4, 5]);
 
 Stats::stdev([1, 2, 3, 4, 5]);
 // 1.5811388301
-
-Stats::sterr([1, 2, 3, 4, 5]);
-// 0.707106781187
 ```
 
 #### Sample or Population
@@ -153,12 +149,18 @@ Stats::variance([1, 2, 3, 4, 5], Stats::POPULATION);
 
 Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION);
 // 1.4142135624
-
-Stats::sterr([1, 2, 3, 4, 5], Stats::POPULATION);
-// 0.70710678118655
 ```
 
 `Stats::Sample` is used by default and can be omitted if that's the intention.
+
+### Standard Error of the Mean
+
+Estimates how well the sample mean approximates the population mean:
+
+```php
+Stats::sterr([1, 2, 3, 4, 5]);
+// 0.70710678118655
+```
 
 ### Quartiles, Interquartile Range & Outliers
 

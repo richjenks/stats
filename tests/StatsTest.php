@@ -70,16 +70,14 @@ final class StatsTest extends TestCase
 
 	public function testSd(): void
 	{
-		$this->assertEquals(1.5811388301, Stats::sd([1, 2, 3, 4, 5]));
-		$this->assertEquals(1.5811388301, Stats::sd([1, 2, 3, 4, 5], Stats::SAMPLE));
-		$this->assertEquals(1.4142135624, Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION));
+		$this->assertEquals(1.58113883, round(Stats::sd([1, 2, 3, 4, 5]), 8));
+		$this->assertEquals(1.58113883, round(Stats::sd([1, 2, 3, 4, 5], Stats::SAMPLE), 8));
+		$this->assertEquals(1.41421356, round(Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION), 8));
 	}
 
 	public function testSem(): void
 	{
-		$this->assertEquals(0.707106781187, Stats::sem([1, 2, 3, 4, 5]));
-		$this->assertEquals(0.707106781187, Stats::sem([1, 2, 3, 4, 5], Stats::SAMPLE));
-		$this->assertEquals(0.63245553203368, Stats::sem([1, 2, 3, 4, 5], Stats::POPULATION));
+		$this->assertEquals(0.70710678, round(Stats::sem([1, 2, 3, 4, 5]), 8));
 	}
 
 	public function testQuartiles(): void
