@@ -17,7 +17,7 @@ class Stats
 	/**
 	 * Calculates the Mean of given data
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return float Calculated Mean
 	 */
 	public static function mean(array $data) : float
@@ -28,7 +28,7 @@ class Stats
 	/**
 	 * Alias for Mean, usage is the same
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return float Calculated Mean
 	 */
 	public static function average(array $data) : float
@@ -39,7 +39,7 @@ class Stats
 	/**
 	 * Calculates the Median of given data
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return float Calculated Median
 	 */
 	public static function median(array $data) : float
@@ -54,7 +54,7 @@ class Stats
 	/**
 	 * Calculates the Mode of given data
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return array Mode(s)
 	 */
 	public static function mode(array $data) : array
@@ -89,8 +89,8 @@ class Stats
 	/**
 	 * Constructs a sorted array of frequencies for each value in a series
 	 *
-	 * @param  array $data Array of numbers
-	 * @return array Array of numbers and frequencies
+	 * @param  array $data Array of values
+	 * @return array Array of values and frequencies
 	 */
 	public function frequencies(array $data) : array
 	{
@@ -102,7 +102,7 @@ class Stats
 	/**
 	 * Determines the Range of given data
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return float Calculated Range
 	 */
 	public static function range(array $data) : float
@@ -113,7 +113,7 @@ class Stats
 	/**
 	 * Determines the Variance of given data
 	 *
-	 * @param array $data Array of numbers
+	 * @param array $data Array of values
 	 * @param int   $type Whether the data is a sample or whole population
 	 *
 	 * @return float Calculated Variance
@@ -138,7 +138,7 @@ class Stats
 	/**
 	 * Determines the Standard Deviation of given data
 	 *
-	 * @param array $data Array of numbers
+	 * @param array $data Array of values
 	 * @param int   $type Whether the data is a sample or whole population
 	 *
 	 * @return float Calculated Standard Deviation
@@ -151,7 +151,7 @@ class Stats
 	/**
 	 * Determines the Standard Error of the Mean
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return float Calculated Standard Error
 	 */
 	public static function sem(array $data) : float
@@ -166,7 +166,7 @@ class Stats
 	/**
 	 * Calculates the Quartiles of given data
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return array Quartiles 0–4 in order
 	 */
 	public static function quartiles(array $data) : array
@@ -196,7 +196,7 @@ class Stats
 	/**
 	 * Calculates the Interquartile Range of given data
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return array Calculated Interquartile Range
 	 */
 	public static function iqr(array $data) : float
@@ -208,7 +208,7 @@ class Stats
 	/**
 	 * Determines which values in a series are outliers
 	 *
-	 * @param  array $data Array of numbers
+	 * @param  array $data Array of values
 	 * @return array Array of outliers
 	 */
 	public static function outliers(array $data) : array
