@@ -133,6 +133,8 @@ Stats::stdev([1, 2, 3, 4, 5]);
 
 #### Sample or Population
 
+`Sample` is the default mode for Variance and Standard Deviation so if you're unsure of the effect this decision has on your data then you probably don't need it and can skip this section.
+
 > **Definitions**
 >
 > *Population*
@@ -150,8 +152,6 @@ Stats::variance([1, 2, 3, 4, 5], Stats::POPULATION);
 Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION);
 // 1.4142135624
 ```
-
-`Stats::Sample` is used by default and can be omitted if that's the intention.
 
 ### Standard Error of the Mean
 
