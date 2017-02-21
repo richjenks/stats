@@ -98,10 +98,17 @@ Constructs a sorted array of frequencies for each value in a series:
 
 ```php
 Stats::frequencies([1, 2, 3]);
-// [1 => 1, 2 => 1, 3 => 1]
+// [
+//   1 => 1,
+//   2 => 1,
+//   3 => 1,
+// ]
 
 Stats::frequencies([10, 20, 20]);
-// [20 => 2, 10 => 1]
+// [
+//   20 => 2,
+//   10 => 1,
+// ]
 ```
 
 ### Range
@@ -121,19 +128,43 @@ Stats::range([-41, 1.61803]);
 These functions calculate:
 
 - **Variance**: square of average variation from the mean
-- **Standard Deviation**: square of average variation from the mean
+- **Standard Deviation**: average variation from the mean (square root of Variance)
 
 ```php
 Stats::variance([1, 2, 3, 4, 5]);
 // 2.5
 
-Stats::stdev([1, 2, 3, 4, 5]);
+Stats::sd([1, 2, 3, 4, 5]);
 // 1.5811388301
+```
+
+#### Individual Deviations
+
+The `deviations` function is also available if you require the deviations for each individual value, for example:
+
+```php
+Stats::deviations([1, 2, 3, 4, 5]);
+// [
+//   1 => 4,
+//   2 => 1,
+//   3 => 0,
+//   4 => 1,
+//   5 => 4,
+// ]
+
+Stats::deviations([42, 75, 101, 22.5, 18]);
+// [
+//   42   => 94.09,
+//   75   => 542.89,
+//   101  => 2430.49,
+//   22.5 => 852.64,
+//   18   => 1135.69,
+// ]
 ```
 
 #### Sample or Population
 
-`Sample` is the default mode for Variance and Standard Deviation so if you're unsure of the effect this decision has on your data then you probably don't need it and can skip this section.
+`Sample` is the default mode for Variance and Standard Deviation but if you're unsure of the effect this decision has on your data then you probably don't need it and can skip this section.
 
 > **Definitions**
 >
@@ -158,7 +189,7 @@ Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION);
 Estimates how well the sample mean approximates the population mean:
 
 ```php
-Stats::sterr([1, 2, 3, 4, 5]);
+Stats::sem([1, 2, 3, 4, 5]);
 // 0.70710678118655
 ```
 
@@ -178,10 +209,22 @@ Calculates Quartiles 0—4, where:
 
 ```php
 Stats::quartiles([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-// [0 => 1, 1 => 3.5, 2 => 6.5, 3 => 9.5, 4 => 12]
+// [
+//   0 => 1,
+//   1 => 3.5,
+//   2 => 6.5,
+//   3 => 9.5,
+//   4 => 12,
+// ]
 
 Stats::quartiles([839, 560, 607, 828, 875, 805, 646, 450, 930, 443])
-// [0 => 443, 1 => 560, 2 => 725.5, 3 => 839, 4 => 930]
+// [
+//   0 => 443,
+//   1 => 560,
+//   2 => 725.5,
+//   3 => 839,
+//   4 => 930,
+// ]
 ```
 
 #### Interquartile Range

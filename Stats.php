@@ -111,6 +111,24 @@ class Stats
 	}
 
 	/**
+	 * Determines the deviations of each value of given data
+	 *
+	 * @param array $data Array of values
+	 * @return array Values as keys and deviations as values
+	 */
+	public static function deviations(array $data) : array
+	{
+		$mean = self::mean($data);
+
+		$deviations = [];
+		foreach ($data as $key => $value) {
+			$deviations[$value] = pow($value - $mean, 2);
+		}
+
+		return $deviations;
+	}
+
+	/**
 	 * Determines the Variance of given data
 	 *
 	 * @param array $data Array of values
@@ -120,15 +138,12 @@ class Stats
 	 */
 	public static function variance(array $data, int $type = self::SAMPLE) : float
 	{
-		$mean = self::mean($data);
+		$deviations = self::deviations($data);
 
-		foreach ($data as $key => $value) {
-			$data[$key] = $value - $mean;
-			$data[$key] = pow($data[$key], 2);
-		}
-
-		$sum      = array_sum($data);
-		$count    = count($data);
+		// Must sum and count, etc. rather than simply calculate mean
+		// to accommodate for sample/variance option
+		$sum      = array_sum($deviations);
+		$count    = count($deviations);
 		$divide   = ($type === self::SAMPLE) ? $count - 1 : $count;
 		$variance = $sum / $divide;
 

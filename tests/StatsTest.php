@@ -61,6 +61,18 @@ final class StatsTest extends TestCase
 		$this->assertEquals(42.61803, Stats::range([-41, 1.61803]));
 	}
 
+	public function testDeviations(): void
+	{
+		$this->assertEquals(
+			[1 => 4, 2 => 1, 3 => 0, 4 => 1, 5 => 4],
+			Stats::deviations([1, 2, 3, 4, 5])
+		);
+		$this->assertEquals(
+			[42 => 94.09, 75 => 542.89, 101 => 2430.49, 22.5 => 852.64, 18 => 1135.69],
+			Stats::deviations([42, 75, 101, 22.5, 18])
+		);
+	}
+
 	public function testVariance(): void
 	{
 		$this->assertEquals(2.5, Stats::variance([1, 2, 3, 4, 5]));
