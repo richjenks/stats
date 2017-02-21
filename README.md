@@ -13,6 +13,7 @@ Statistics library for non-statistical people
 	- [Frequencies](#frequencies)
 	- [Range](#range)
 	- [Variance, Standard Deviation & Standard Error](#variance-standard-deviation--standard-error)
+		- [Individual Deviations](#individual-deviations)
 		- [Sample or Population](#sample-or-population)
 	- [Quartiles, Interquartile Range & Outliers](#quartiles-interquartile-range--outliers)
 		- [Quartiles](#quartiles)
