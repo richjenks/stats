@@ -20,6 +20,9 @@ Statistics library for non-statistical people
 		- [Interquartile Range](#interquartile-range)
 		- [Outliers](#outliers)
 	- [Percentiles](#percentiles)
+		- [All Percentiles](#all-percentiles)
+		- [Single Percentile](#single-percentile)
+		- [In Percentile](#in-percentile)
 - [Unit Tests](#unit-tests)
 
 ## Introduction
