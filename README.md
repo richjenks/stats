@@ -285,7 +285,7 @@ Stats::percentiles([15, 20, 35, 40, 50]);
 Determines the value closest to the given percentile:
 
 ```php
-Stats::percentile([15, 20, 35, 40, 50], 71);
+Stats::percentile([15, 20, 35, 40, 50], 75);
 // [
 //   'value'      => 40,
 //   'percentile' => 71,
@@ -294,7 +294,7 @@ Stats::percentile([15, 20, 35, 40, 50], 71);
 
 #### In Percentile
 
-Determines the values that fall in the given percentile, i.e. the lowest _x_% of all values:
+Determines the values that fall in the given percentile, _i.e._ the lowest _x_% of all values:
 
 ```php
 Stats::inpercentile([15, 20, 35, 40, 50], 60);
