@@ -119,4 +119,16 @@ final class StatsTest extends TestCase
 	{
 		$this->assertEquals([999], Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]));
 	}
+
+	public function testPercentiles(): void
+	{
+		$this->assertEquals(
+			[15 => 0, 20 => 14, 35 => 57, 40 => 71, 50 => 100],
+			Stats::percentiles([15, 20, 35, 40, 50])
+		);
+		$this->assertEquals(
+			[15 => 0, 20 => 14.29, 35 => 57.14, 40 => 71.43, 50 => 100],
+			Stats::percentiles([15, 20, 35, 40, 50], 2)
+		);
+	}
 }

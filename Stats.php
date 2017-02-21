@@ -243,4 +243,29 @@ class Stats
 		return $outliers;
 	}
 
+	/**
+	 * Determines the percentils of each value in a range
+	 *
+	 * @param array $data Array of values
+	 * @param int   $rount Number of decimal places to round results to
+	 *
+	 * @return array Values as keys and percentiles as values
+	 */
+	public static function percentiles(array $data, int $round = 0) : array
+	{
+		sort($data);
+
+		$min  = min($data);
+		$step = 100 / self::range($data);
+
+		$percentiles = [];
+		foreach ($data as $value) {
+			$percentile = ($value - $min) * $step;
+			$percentile = round($percentile, $round);
+			$percentiles[$value] = $percentile;
+		}
+
+		return $percentiles;
+	}
+
 }

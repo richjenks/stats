@@ -252,6 +252,30 @@ Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
 // [999]
 ```
 
+### Percentiles
+
+Determines the percentile of each value in a range with option for rounding:
+
+```php
+Stats::percentiles([15, 20, 35, 40, 50]);
+// [
+//   15 => 0,
+//   20 => 14,
+//   35 => 57,
+//   40 => 71,
+//   50 => 100,
+// ]
+
+Stats::percentiles([15, 20, 35, 40, 50], 2);
+// [
+//   15 => 0,
+//   20 => 14.29,
+//   35 => 57.14,
+//   40 => 71.43,
+//   50 => 100,
+// ]
+```
+
 ## Unit Tests
 
 ```bash
