@@ -19,6 +19,7 @@ Statistics library for non-statistical people
 		- [Quartiles](#quartiles)
 		- [Interquartile Range](#interquartile-range)
 		- [Outliers](#outliers)
+	- [Percentiles](#percentiles)
 - [Unit Tests](#unit-tests)
 
 ## Introduction
