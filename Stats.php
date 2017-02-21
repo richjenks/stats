@@ -244,7 +244,7 @@ class Stats
 	}
 
 	/**
-	 * Determines the percentils of each value in a range
+	 * Determines the percentiles of each value in a range
 	 *
 	 * @param array $data Array of values
 	 * @param int   $rount Number of decimal places to round results to
