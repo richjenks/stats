@@ -20,7 +20,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return float Calculated Mean
 	 */
-	public static function mean(array $data) : float
+	public static function mean(array $data): float
 	{
 		return array_sum($data) / count($data);
 	}
@@ -31,7 +31,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return float Calculated Mean
 	 */
-	public static function average(array $data) : float
+	public static function average(array $data): float
 	{
 		return self::mean($data);
 	}
@@ -42,7 +42,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return float Calculated Median
 	 */
-	public static function median(array $data) : float
+	public static function median(array $data): float
 	{
 		sort($data);
 		$count = count($data);
@@ -57,7 +57,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return array Mode(s)
 	 */
-	public static function mode(array $data) : array
+	public static function mode(array $data): array
 	{
 		// Frequency of each value
 		$data = self::frequencies($data);
@@ -92,7 +92,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return array Array of values and frequencies
 	 */
-	public function frequencies(array $data) : array
+	public function frequencies(array $data): array
 	{
 		$frequencies = array_count_values($data);
 		arsort($frequencies);
@@ -105,7 +105,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return float Calculated Range
 	 */
-	public static function range(array $data) : float
+	public static function range(array $data): float
 	{
 		return max($data) - min($data);
 	}
@@ -116,7 +116,7 @@ class Stats
 	 * @param array $data Array of values
 	 * @return array Values as keys and deviations as values
 	 */
-	public static function deviations(array $data) : array
+	public static function deviations(array $data): array
 	{
 		$mean = self::mean($data);
 
@@ -136,7 +136,7 @@ class Stats
 	 *
 	 * @return float Calculated Variance
 	 */
-	public static function variance(array $data, int $type = self::SAMPLE) : float
+	public static function variance(array $data, int $type = self::SAMPLE): float
 	{
 		$deviations = self::deviations($data);
 
@@ -158,7 +158,7 @@ class Stats
 	 *
 	 * @return float Calculated Standard Deviation
 	 */
-	public static function sd(array $data, int $type = self::SAMPLE) : float
+	public static function sd(array $data, int $type = self::SAMPLE): float
 	{
 		return sqrt(self::variance($data, $type));
 	}
@@ -169,7 +169,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return float Calculated Standard Error
 	 */
-	public static function sem(array $data) : float
+	public static function sem(array $data): float
 	{
 		$sd    = self::sd($data);
 		$count = count($data);
@@ -184,7 +184,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return array Quartiles 0–4 in order
 	 */
-	public static function quartiles(array $data) : array
+	public static function quartiles(array $data): array
 	{
 		sort($data);
 
@@ -214,7 +214,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return array Calculated Interquartile Range
 	 */
-	public static function iqr(array $data) : float
+	public static function iqr(array $data): float
 	{
 		$quartiles = self::quartiles($data);
 		return $quartiles[3] - $quartiles[1];
@@ -226,7 +226,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return array Array of outliers
 	 */
-	public static function outliers(array $data) : array
+	public static function outliers(array $data): array
 	{
 		$q     = self::quartiles($data);
 		$iqr   = self::iqr($data);
@@ -247,11 +247,11 @@ class Stats
 	 * Determines the percentiles of each value in a range
 	 *
 	 * @param array $data Array of values
-	 * @param int   $rount Number of decimal places to round results to
+	 * @param int   $rount Number of decimal places to round results to, negative for no rounding
 	 *
 	 * @return array Values as keys and percentiles as values
 	 */
-	public static function percentiles(array $data, int $round = 0) : array
+	public static function percentiles(array $data, int $round = 0): array
 	{
 		sort($data);
 
@@ -261,11 +261,67 @@ class Stats
 		$percentiles = [];
 		foreach ($data as $value) {
 			$percentile = ($value - $min) * $step;
-			$percentile = round($percentile, $round);
+			if ($round >= 0) {
+				$percentile = round($percentile, $round);
+			}
 			$percentiles[$value] = $percentile;
 		}
 
 		return $percentiles;
+	}
+
+	/**
+	 * Determines the value at the given percentile in a range
+	 *
+	 * @param array $data       Array of values
+	 * @param float $percentile Percentile to find based on Closest Rank
+	 *
+	 * @return array Closest value as key and exact percentile as value
+	 */
+	public static function percentile(array $data, float $percentile, int $round = 0): array
+	{
+		$percentiles = self::percentiles($data, $round);
+		$closest     = ['value' => null, 'percentile' => null];
+
+		foreach ($percentiles as $value => $value_percentile) {
+			if ($closest['value'] === null) {
+				$closest['value']      = $value;
+				$closest['percentile'] = $value_percentile;
+			} else {
+				$max_closest = max([$closest['percentile'], $percentile]);
+				$min_closest = min([$closest['percentile'], $percentile]);
+
+				$max_search = max([$value_percentile, $percentile]);
+				$min_search = min([$value_percentile, $percentile]);
+
+				if ($max_closest - $min_closest > $max_search - $min_search) {
+					$closest['value']      = $value;
+					$closest['percentile'] = $value_percentile;
+				}
+			}
+		}
+
+		return $closest;
+	}
+
+	/**
+	 * Determines the values in the given data that fall in the given percentile
+	 *
+	 * @param array $data       Array of values
+	 * @param float $percentile Percentile to search for
+	 *
+	 * @return array Values as keys and percentiles as values
+	 */
+	public static function inpercentile(array $data, float $percentile, int $round = 0): array
+	{
+		$percentiles = self::percentiles($data, $round);
+		$inpercentile = [];
+		foreach ($percentiles as $value => $value_percentile) {
+			if ($percentile >= $value_percentile) {
+				$inpercentile[$value] = $value_percentile;
+			}
+		}
+		return $inpercentile;
 	}
 
 }

@@ -255,7 +255,15 @@ Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
 
 ### Percentiles
 
-Determines the percentile of each value in a range with option for rounding. Omit the rounding parameter to get the Closest Rank or set it to as many decimal places as required for the exact percentage.
+All percentile functions accept an optional additional parameter for rounding that works as follows:
+
+- If omitted, percentages are rounded to the nearest whole
+- If a positive integer, percentages are rounded to that many decimal places
+- If a negative integer (e.g. `-1`), percentages are not rounded
+
+#### All Percentiles
+
+Determines the percentile of each value:
 
 ```php
 // Closest Rank
@@ -267,15 +275,30 @@ Stats::percentiles([15, 20, 35, 40, 50]);
 //   40 => 71,
 //   50 => 100,
 // ]
+```
 
-// Exact Percentage
-Stats::percentiles([15, 20, 35, 40, 50], 2);
+#### Single Percentile
+
+Determines the value closest to the given percentile:
+
+```php
+Stats::percentile([15, 20, 35, 40, 50], 71);
+// [
+//   'value'      => 40,
+//   'percentile' => 71,
+// ]
+```
+
+#### In Percentile
+
+Determines the values that fall in the given percentile, i.e. the lowest _x_% of all values:
+
+```php
+Stats::inpercentile([15, 20, 35, 40, 50], 60);
 // [
 //   15 => 0,
-//   20 => 14.29,
-//   35 => 57.14,
-//   40 => 71.43,
-//   50 => 100,
+//   20 => 14,
+//   35 => 57,
 // ]
 ```
 

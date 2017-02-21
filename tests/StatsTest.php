@@ -131,4 +131,28 @@ final class StatsTest extends TestCase
 			Stats::percentiles([15, 20, 35, 40, 50], 2)
 		);
 	}
+
+	public function testPercentile(): void
+	{
+		$this->assertEquals(
+			['value' => 35, 'percentile' => 57],
+			Stats::percentile([15, 20, 35, 40, 50], 60)
+		);
+		$this->assertEquals(
+			['value' => 20, 'percentile' => 14.29],
+			Stats::percentile([15, 20, 35, 40, 50], 15, 2)
+		);
+	}
+
+	public function testInpercentile(): void
+	{
+		$this->assertEquals(
+			[15 => 0, 20 => 14, 35 => 57],
+			Stats::inpercentile([15, 20, 35, 40, 50], 60)
+		);
+		$this->assertEquals(
+			[15 => 0, 20 => 14.29],
+			Stats::inpercentile([15, 20, 35, 40, 50], 25, 2)
+		);
+	}
 }
