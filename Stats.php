@@ -92,7 +92,7 @@ class Stats
 	 * @param  array $data Array of values
 	 * @return array Array of values and frequencies
 	 */
-	public function frequencies(array $data): array
+	public static function frequencies(array $data): array
 	{
 		$frequencies = array_count_values($data);
 		arsort($frequencies);
