@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RichJenks;
+namespace RichJenks\Stats;
 
 /**
  * PHP Statistics Library for non-statisticians

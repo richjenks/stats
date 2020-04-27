@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
+namespace RichJenks\Stats;
 
-use RichJenks\Stats;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * @covers Stats

@@ -1,0 +1,24 @@
+{
+	"name": "richjenks/stats",
+	"type": "library",
+	"description": "Statistics library for non-statistical people",
+	"keywords": ["stats","statistics"],
+	"homepage": "https://github.com/richjenks/stats",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Rich Jenkins",
+			"email": "github@richjenks.com",
+			"homepage": "https://richjenks.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=7.2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"RichJenks\\Stats\\": ""
+		}
+	}
+}

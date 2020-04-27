@@ -37,14 +37,14 @@ Many of the methods in this library are available from the [Statistics Extension
 
 1. Install with Composer: `composer require richjenks/stats`
 1. Include autoloader: `require 'vendor/autoload.php';`
-1. All static methods are available from the `RichJenks\Stats` class
+1. All static methods are available from the `RichJenks\Stats\Stats` class
 
 ## Quickstart
 
 ```php
 <?php
 require 'vendor/autoload.php';
-use RichJenks\Stats;
+use RichJenks\Stats\Stats;
 echo Stats::mean([1, 2, 3]);
 // 2
 ```
