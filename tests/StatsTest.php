@@ -115,9 +115,22 @@ final class StatsTest extends TestCase
 		$this->assertEquals(279, Stats::iqr([839, 560, 607, 828, 875, 805, 646, 450, 930, 443]));
 	}
 
+	public function testWhiskers(): void
+	{
+		$this->assertEquals(
+			['lower' => -6, 'upper' => 18],
+			Stats::whiskers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
+		);
+	}
+
 	public function testOutliers(): void
 	{
 		$this->assertEquals([999], Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]));
+	}
+
+	public function testInliers(): void
+	{
+		$this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], Stats::inliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]));
 	}
 
 	public function testPercentiles(): void
@@ -144,15 +157,15 @@ final class StatsTest extends TestCase
 		);
 	}
 
-	public function testInpercentile(): void
+	public function testIntrapercentile(): void
 	{
 		$this->assertEquals(
 			[15 => 0, 20 => 14, 35 => 57],
-			Stats::inpercentile([15, 20, 35, 40, 50], 60)
+			Stats::intrapercentile([15, 20, 35, 40, 50], 60)
 		);
 		$this->assertEquals(
 			[15 => 0, 20 => 14.29],
-			Stats::inpercentile([15, 20, 35, 40, 50], 25, 2)
+			Stats::intrapercentile([15, 20, 35, 40, 50], 25, 2)
 		);
 	}
 }

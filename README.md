@@ -255,6 +255,24 @@ Stats::outliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
 // [999]
 ```
 
+#### Inliers
+
+Determines which values in a series are not outliers, i.e. removes outliers:
+
+```php
+Stats::inliers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
+// [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+#### Whiskers
+
+Determines the lower and upper limit for identifying outliers:
+
+```php
+Stats::whiskers([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999])
+// ['lower' => -6, 'upper' => 18]
+```
+
 ### Percentiles
 
 All percentile functions accept an optional additional parameter for rounding that works as follows:
@@ -291,12 +309,12 @@ Stats::percentile([15, 20, 35, 40, 50], 75);
 // ]
 ```
 
-#### In Percentile
+#### Intra-Percentile
 
 Determines the values that fall in the given percentile, _i.e._ the lowest _x_% of all values:
 
 ```php
-Stats::inpercentile([15, 20, 35, 40, 50], 60);
+Stats::intrapercentile([15, 20, 35, 40, 50], 60);
 // [
 //   15 => 0,
 //   20 => 14,

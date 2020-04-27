@@ -221,6 +221,22 @@ class Stats
 	}
 
 	/**
+	 * Determines the lower and upper limit for outliers
+	 * 
+	 * @param array $data Array of values
+	 * @return array 0 => lower limit, 1 => upper limit
+	 */
+	public static function whiskers(array $data): array
+	{
+		$q     = self::quartiles($data);
+		$iqr   = self::iqr($data);
+		$lower = $q[1] - ($iqr * 1.5);
+		$upper = $q[3] + ($iqr * 1.5);
+
+		return ['lower' => $lower, 'upper' => $upper];
+	}
+
+	/**
 	 * Determines which values in a series are outliers
 	 *
 	 * @param  array $data Array of values
@@ -228,19 +244,38 @@ class Stats
 	 */
 	public static function outliers(array $data): array
 	{
-		$q     = self::quartiles($data);
-		$iqr   = self::iqr($data);
-		$lower = $q[1] - ($iqr * 1.5);
-		$upper = $q[3] + ($iqr * 1.5);
+		$whiskers = self::whiskers($data);
+		extract($whiskers);
 
 		$outliers = [];
 		foreach ($data as $value) {
-			if ($value > $upper || $value < $lower) {
+			if ($value < $lower || $value > $upper) {
 				$outliers[] = $value;
 			}
 		}
 
 		return $outliers;
+	}
+
+	/**
+	 * Determines which values in a series are not outliers
+	 *
+	 * @param  array $data Array of values
+	 * @return array Array of inliers
+	 */
+	public static function inliers(array $data): array
+	{
+		$whiskers = self::whiskers($data);
+		extract($whiskers);
+
+		$inliers = [];
+		foreach ($data as $value) {
+			if ($value >= $lower && $value <= $upper) {
+				$inliers[] = $value;
+			}
+		}
+
+		return $inliers;
 	}
 
 	/**
@@ -312,16 +347,16 @@ class Stats
 	 *
 	 * @return array Values as keys and percentiles as values
 	 */
-	public static function inpercentile(array $data, float $percentile, int $round = 0): array
+	public static function intrapercentile(array $data, float $percentile, int $round = 0): array
 	{
 		$percentiles = self::percentiles($data, $round);
-		$inpercentile = [];
+		$intrapercentile = [];
 		foreach ($percentiles as $value => $value_percentile) {
 			if ($percentile >= $value_percentile) {
-				$inpercentile[$value] = $value_percentile;
+				$intrapercentile[$value] = $value_percentile;
 			}
 		}
-		return $inpercentile;
+		return $intrapercentile;
 	}
 
 }
