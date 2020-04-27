@@ -3,9 +3,8 @@
 Statistics library for non-statistical people
 
 - [Introduction](#introduction)
-- [Requirements](#requirements)
-- [Getting Started](#getting-started)
-- [Example](#example)
+- [Installation](#installation)
+- [Quickstart](#quickstart)
 - [Usage](#usage)
 	- [Mean/Average](#meanaverage)
 	- [Median](#median)
@@ -33,17 +32,13 @@ By design, with the exception of statistical tests, functions generally accept a
 
 Many of the methods in this library are available from the [Statistics Extension](http://uk1.php.net/manual/en/book.stats.php), however this is not included in PHP by default. If possible, I'd recommend using this extension rather than my stats library.
 
-## Requirements
-
-PHP 7.2 and PDO SQLite
-
-## Getting Started
+## Installation
 
 1. Install with Composer: `composer require richjenks/stats`
 1. Include autoloader: `require 'vendor/autoload.php';`
 1. All static methods are available from the `RichJenks\Stats` class
 
-## Example
+## Quickstart
 
 ```php
 <?php
@@ -136,10 +131,12 @@ These functions calculate:
 - **Standard Deviation**: average variation from the mean (square root of Variance)
 
 ```php
-Stats::variance([1, 2, 3, 4, 5]);
+$data = [1, 2, 3, 4, 5];
+
+Stats::variance($data);
 // 2.5
 
-Stats::sd([1, 2, 3, 4, 5]);
+Stats::sd($data);
 // 1.5811388301
 ```
 
@@ -182,10 +179,12 @@ Stats::deviations([42, 75, 101, 22.5, 18]);
 You can optionally pass the constants `Stats::Sample` or `Stats::POPULATION` as second parameters to determine whether your data is for a sample or a whole population:
 
 ```php
-Stats::variance([1, 2, 3, 4, 5], Stats::POPULATION);
+$data = [1, 2, 3, 4, 5];
+
+Stats::variance($data, Stats::POPULATION);
 // 2
 
-Stats::sd([1, 2, 3, 4, 5], Stats::POPULATION);
+Stats::sd($data, Stats::POPULATION);
 // 1.4142135624
 ```
 
