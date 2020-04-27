@@ -1,0 +1,21 @@
+#!/usr/bin/php
+<?php
+
+require 'Stats.php';
+
+// Discard filename
+array_shift($argv);
+
+// Extract method name
+$method = array_shift($argv);
+
+// Prepare arguments
+$arguments = array_map(function ($argument) {
+    return intval($argument);
+}, $argv);
+
+// Do the math(s)
+$result = call_user_func('RichJenks\Stats::' . $method, $arguments);
+
+// Spit. It. Out.
+echo (gettype($result) === 'array') ? implode(',', $result) : $result;

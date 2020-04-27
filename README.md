@@ -22,6 +22,7 @@ Statistics library for non-statistical people
 		- [All Percentiles](#all-percentiles)
 		- [Single Percentile](#single-percentile)
 		- [In Percentile](#in-percentile)
+- [CLI](#cli)
 - [Unit Tests](#unit-tests)
 
 ## Introduction
@@ -321,6 +322,20 @@ Stats::intrapercentile([15, 20, 35, 40, 50], 60);
 //   35 => 57,
 // ]
 ```
+
+## CLI
+
+CLI usage is supported via the included `scli` (Stats Command Line Interface) file and simply expects the name of the required method followed by its arguments:
+
+```bash
+./scli mean 1 2 3
+# 2
+
+./scli inliers 1 2 3 4 5 999
+# 1,2,3,4,5
+```
+
+> In cases where the result is a set (i.e. an array) it is presented as comma-separated
 
 ## Unit Tests
 
