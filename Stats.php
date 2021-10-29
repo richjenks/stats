@@ -122,7 +122,7 @@ class Stats
 
 		$deviations = [];
 		foreach ($data as $key => $value) {
-			$deviations[$value] = pow($value - $mean, 2);
+			$deviations[(string) $value] = pow($value - $mean, 2);
 		}
 
 		return $deviations;
@@ -222,7 +222,7 @@ class Stats
 
 	/**
 	 * Determines the lower and upper limit for outliers
-	 * 
+	 *
 	 * @param array $data Array of values
 	 * @return array 0 => lower limit, 1 => upper limit
 	 */
